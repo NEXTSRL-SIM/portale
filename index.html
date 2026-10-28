@@ -5528,7 +5528,7 @@ window.PAGINE_NUOVE={'dashboard':'https://nextsrl-sim.github.io/percorso/','cont
 #vImpostazioni[hidden]{display:none!important}
 #vImpostazioni .ip-sez{background:var(--pa-sf);border-right:1px solid var(--pa-ln);padding:18px 12px;display:flex;flex-direction:column;gap:2px;overflow-y:auto}
 #vImpostazioni .ip-tit{display:flex;align-items:center;gap:10px;padding:2px 8px 14px;font-size:17px;font-weight:800}
-#vImpostazioni .ip-tit i{display:grid;place-items:center;width:32px;height:32px;border-radius:10px;background:var(--pa-ac);color:#fff}
+#vImpostazioni .ip-tit i{display:grid;place-items:center;width:20px;height:20px;color:var(--pa-ink2)}
 #vImpostazioni .ip-g{font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--pa-ink3);font-weight:800;padding:14px 10px 6px}
 #vImpostazioni .ip-v{all:unset;cursor:pointer;display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:10px;font-size:13.5px;font-weight:700;color:var(--pa-ink2)}
 #vImpostazioni .ip-v:hover{background:var(--pa-sf2)}
@@ -5536,13 +5536,33 @@ window.PAGINE_NUOVE={'dashboard':'https://nextsrl-sim.github.io/percorso/','cont
 #vImpostazioni .ip-v[aria-selected="true"]{background:var(--pa-acw);color:var(--pa-ac)}
 #vImpostazioni .ip-v b{display:grid;place-items:center;width:28px;height:28px;border-radius:8px;flex:none}
 #vImpostazioni .ip-v b svg{width:15px;height:15px}
-#vImpostazioni .c-ac{background:var(--pa-acw);color:var(--pa-ac)}#vImpostazioni .c-gr{background:var(--pa-grw);color:var(--pa-gr)}#vImpostazioni .c-am{background:var(--pa-amw);color:var(--pa-am)}#vImpostazioni .c-vi{background:var(--pa-viw);color:var(--pa-vi)}
+#vImpostazioni .ip-v b{width:18px;height:18px;background:none!important;color:inherit}
+#vImpostazioni .ip-v b svg{width:16px;height:16px}
+#vImpostazioni .ip-tit span{flex:1}
+#vImpostazioni .ip-pin{all:unset;cursor:pointer;display:grid;place-items:center;width:30px;height:30px;border-radius:8px;border:1px solid var(--pa-ln);background:var(--pa-sf);color:var(--pa-ink3);flex:none}
+#vImpostazioni .ip-pin:hover{color:var(--pa-ac)}#vImpostazioni .ip-pin[aria-pressed="true"]{color:var(--pa-ac);background:var(--pa-acw);border-color:var(--pa-acw)}
+#vImpostazioni .ip-pin svg{width:14px;height:14px}
+#vImpostazioni.ip-stretto{grid-template-columns:64px minmax(0,1fr)}
+#vImpostazioni.ip-stretto .ip-sez{width:64px;padding:18px 10px;position:relative;z-index:5;transition:width .15s,box-shadow .15s}
+#vImpostazioni.ip-stretto .ip-tit{padding:2px 0 14px;justify-content:center}
+#vImpostazioni.ip-stretto .ip-tit i,#vImpostazioni.ip-stretto .ip-tit span,#vImpostazioni.ip-stretto .ip-l{display:none}
+#vImpostazioni.ip-stretto .ip-g{font-size:0;padding:0;margin:10px 6px;height:1px;background:var(--pa-ln)}
+#vImpostazioni.ip-stretto .ip-v{justify-content:center;padding:8px 0}
+#vImpostazioni.ip-stretto .ip-sez.largo{width:232px;padding:18px 12px;box-shadow:12px 0 32px rgba(15,23,42,.14)}
+#vImpostazioni.ip-stretto .ip-sez.largo .ip-tit{justify-content:flex-start;padding:2px 8px 14px}
+#vImpostazioni.ip-stretto .ip-sez.largo .ip-tit i{display:grid}#vImpostazioni.ip-stretto .ip-sez.largo .ip-tit span,#vImpostazioni.ip-stretto .ip-sez.largo .ip-l{display:inline}
+#vImpostazioni.ip-stretto .ip-sez.largo .ip-g{font-size:10.5px;padding:14px 10px 6px;margin:0;height:auto;background:none}
+#vImpostazioni.ip-stretto .ip-sez.largo .ip-v{justify-content:flex-start;padding:8px 10px}
 #vImpostazioni .ip-corpo{min-width:0;min-height:0;position:relative}
 #vImpostazioni .ip-c{position:absolute;inset:0;overflow:auto}
 #vImpostazioni .ip-c[hidden]{display:none}
 #vImpostazioni .ip-c iframe{display:block;width:100%;height:100%;border:0;background:#fff}
 #vImpostazioni .ip-c > #vImpost{display:block}
 #vImpostazioni .ip-c > #vImpost.nascosto{display:block!important}
+
+:root[data-tema="scuro"] #vImpostazioni,:root:not([data-tema]) #vImpostazioni{--pa-ink:#E5EDF5;--pa-ink2:#B6C3D1;--pa-ink3:#8193A6;--pa-ac:#22D3EE;--pa-acw:rgba(34,211,238,.12);--pa-ln:#1E2836;--pa-sf:#0B1119;--pa-sf2:#111A24;color-scheme:dark}
+:root[data-tema="scuro"] #vImpostazioni .ip-c iframe,:root:not([data-tema]) #vImpostazioni .ip-c iframe{background:#0B1119}
+:root[data-tema="scuro"] #vImpostazioni.ip-stretto .ip-sez.largo,:root:not([data-tema]) #vImpostazioni.ip-stretto .ip-sez.largo{box-shadow:12px 0 32px rgba(0,0,0,.45)}
 @media (max-width:820px){#vImpostazioni{grid-template-columns:1fr;grid-template-rows:auto minmax(0,1fr)}#vImpostazioni .ip-sez{flex-direction:row;flex-wrap:wrap;border-right:0;border-bottom:1px solid var(--pa-ln);padding:10px}#vImpostazioni .ip-g,#vImpostazioni .ip-tit{display:none}}
 </style>
 <script id="impost-js">
@@ -5576,8 +5596,9 @@ window.PAGINE_NUOVE={'dashboard':'https://nextsrl-sim.github.io/percorso/','cont
   ];
   var URL={registro:B+'registro-modifiche',mappa:B+'mappa-sistema',venditori:B+'vendor-admin'};
   var v=document.createElement('div'); v.id='vImpostazioni'; v.hidden=true;
-  var h='<aside class="ip-sez" role="tablist" aria-label="Sezioni delle impostazioni"><div class="ip-tit"><i>'+ico(RUOTA)+'</i>Impostazioni</div>';
-  S.forEach(function(s){ if(s[4]) h+='<div class="ip-g'+(s[5]?' ip-solo':'')+'">'+s[4]+'</div>'; h+='<button type="button" role="tab" class="ip-v'+(s[5]?' ip-solo':'')+'" data-s="'+s[0]+'" aria-selected="false"><b class="'+s[2]+'">'+ico(s[3])+'</b>'+s[1]+'</button>'; });
+  var SPILLO='<path d="M9 4h6l-1 6 3 3H7l3-3zM12 13v8"/>';
+  var h='<aside class="ip-sez" role="tablist" aria-label="Sezioni delle impostazioni"><div class="ip-tit"><i>'+ico(RUOTA)+'</i><span>Impostazioni</span><button type="button" class="ip-pin" title="Fissa il menu delle impostazioni aperto" aria-pressed="true">'+ico(SPILLO)+'</button></div>';
+  S.forEach(function(s){ if(s[4]) h+='<div class="ip-g'+(s[5]?' ip-solo':'')+'">'+s[4]+'</div>'; h+='<button type="button" role="tab" class="ip-v'+(s[5]?' ip-solo':'')+'" data-s="'+s[0]+'" aria-selected="false"><b class="'+s[2]+'">'+ico(s[3])+'</b><span class="ip-l">'+s[1]+'</span></button>'; });
   h+='</aside><div class="ip-corpo">';
   S.forEach(function(s){ h+='<div class="ip-c" data-c="'+s[0]+'" hidden>'+(URL[s[0]]?'<iframe title="'+s[1]+'"></iframe>':'')+'</div>'; });
   v.innerHTML=h+'</div>';
@@ -5606,6 +5627,17 @@ window.PAGINE_NUOVE={'dashboard':'https://nextsrl-sim.github.io/percorso/','cont
   }
   function chiudi(){ v.hidden=true; ifp.style.display=''; r.classList.remove('on'); }
   v.addEventListener('click',function(e){ var b=e.target.closest('.ip-v'); if(b) sezione(b.getAttribute('data-s')); });
+  /* lo spillo: fissato aperto, oppure solo icone che si allargano passandoci sopra */
+  var sz=v.querySelector('.ip-sez'),pin=v.querySelector('.ip-pin');
+  function fissa(f){ v.classList.toggle('ip-stretto',!f); pin.setAttribute('aria-pressed',f); pin.title=f?'Riduci a sole icone':'Fissa il menu delle impostazioni aperto'; sz.classList.remove('largo'); try{localStorage.setItem('ip_fisso',f?'1':'0')}catch(e){} }
+  pin.addEventListener('click',function(e){ e.stopPropagation(); fissa(v.classList.contains('ip-stretto')); });
+  sz.addEventListener('mouseenter',function(){ if(v.classList.contains('ip-stretto')) sz.classList.add('largo'); });
+  sz.addEventListener('mouseleave',function(){ sz.classList.remove('largo'); });
+  v.querySelectorAll('.ip-v').forEach(function(b){ b.setAttribute('title', b.textContent.trim()); });
+  try{ if(localStorage.getItem('ip_fisso')==='0') fissa(false); }catch(e){}
+  function temaAiRiquadri(){ var t=document.documentElement.getAttribute('data-tema')||'scuro'; v.querySelectorAll('iframe').forEach(function(f){ try{ if(f.contentWindow) f.contentWindow.postMessage({tipo:'tema',tema:t},'*'); }catch(e){} }); }
+  v.querySelectorAll('iframe').forEach(function(f){ f.addEventListener('load',function(){ temaAiRiquadri(); setTimeout(temaAiRiquadri,700); }); });
+  new MutationObserver(temaAiRiquadri).observe(document.documentElement,{attributes:true,attributeFilter:['data-tema']});
   nav.addEventListener('click',function(e){
     if(e.target.closest('#mnImpost')){ e.preventDefault(); e.stopPropagation(); apri(); return; }
     if(e.target.closest('.mn-v[data-pag]')||e.target.closest('.st')) chiudi();
