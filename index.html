@@ -5417,7 +5417,10 @@ window.PAGINE_NUOVE={'dashboard':'https://nextsrl-sim.github.io/percorso/','cont
     VISTE.forEach(function(v){var e=document.getElementById(v); if(e) e.classList.add('nascosto');});
     sub.querySelectorAll('.st').forEach(function(b){b.setAttribute('aria-selected','false');});
     nav.querySelectorAll('.mn-v').forEach(function(a){a.classList.toggle('on',a===el);});
-    var f=document.getElementById('ifPortale'); if(f.getAttribute('data-p')!==p){ f.src=(window.PAGINE_NUOVE&&PAGINE_NUOVE[p])?(PAGINE_NUOVE[p]+'?v='+Date.now()):(B+p); f.setAttribute('data-p',p); }
+    var f=document.getElementById('ifPortale');
+    /* leadform-141: cliente e pratica arrivati con il collegamento (#apri=lead-form&client_id=…&practice_id=…) passano alla pagina, una volta sola */
+    var ex=(window.__apriPar&&window.__apriPar.p===p&&window.PAGINE_NUOVE&&PAGINE_NUOVE[p])?('&'+window.__apriPar.q):''; window.__apriPar=null;
+    if(f.getAttribute('data-p')!==p||ex){ f.src=(window.PAGINE_NUOVE&&PAGINE_NUOVE[p])?(PAGINE_NUOVE[p]+'?v='+Date.now()+ex):(B+p); f.setAttribute('data-p',p); }
     vp.classList.remove('nascosto');
     try{localStorage.setItem('mn_pag',p)}catch(e){}
     if(!fisso()) nav.classList.remove('largo');
@@ -5468,13 +5471,18 @@ window.PAGINE_NUOVE={'dashboard':'https://nextsrl-sim.github.io/percorso/','cont
   function temaAPercorsi(){ var f=document.getElementById('ifPerc'); if(f&&f.contentWindow){ try{ f.contentWindow.postMessage({tipo:'tema',tema:document.documentElement.getAttribute('data-tema')||'scuro'},'*'); }catch(e){} } }
   var f=document.getElementById('ifPerc'); if(f) f.addEventListener('load',function(){ temaAPercorsi(); setTimeout(temaAPercorsi,800); });
   new MutationObserver(temaAPercorsi).observe(document.documentElement,{attributes:true,attributeFilter:['data-tema']});
+  /* leadform-141: client_id e practice_id accettati solo come uuid; il resto si scarta */
+  function parApri(pag,testo){ var U=/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i, q=[];
+    ['client_id','practice_id'].forEach(function(k){ var m=String(testo||'').match(new RegExp('(?:^|[#&?])'+k+'=([^&]*)')); var v=''; try{ v=m?decodeURIComponent(m[1]):''; }catch(x){} if(U.test(v)) q.push(k+'='+v); });
+    return q.length?{p:pag,q:q.join('&')}:null; }
+  window.__parApri=parApri;
   if(!PORTALE||!nav) return;
   document.title='Portale Next';
   try{ if(!localStorage.getItem('portale_primo')){ localStorage.setItem('portale_primo','1'); if(typeof tema==='function') tema('chiaro'); } }catch(e){}
   nav.addEventListener('click',function(e){ if(e.target.closest('.st')){ try{localStorage.setItem('mn_pag','regia')}catch(x){} } });
   var p=null; try{ p=localStorage.getItem('mn_pag'); }catch(e){}
   /* i vecchi indirizzi n8n rimandano qui con #apri=<pagina>: si apre quella */
-  var h=(location.hash.match(/apri=([a-z0-9-]+)/)||[])[1]; if(h){ p=h; try{ history.replaceState(null,'',location.pathname+location.search); }catch(e){} }
+  var h=(location.hash.match(/apri=([a-z0-9-]+)/)||[])[1]; if(h){ p=h; window.__apriDaLink=h; window.__apriPar=parApri(h,location.hash); try{ history.replaceState(null,'',location.pathname+location.search); }catch(e){} }
   if(p==='regia') return;
   var a=nav.querySelector('.mn-v[data-pag="'+(p||'dashboard')+'"]')||nav.querySelector('.mn-v[data-pag="dashboard"]');
   if(a) a.click();
@@ -5518,7 +5526,9 @@ window.PAGINE_NUOVE={'dashboard':'https://nextsrl-sim.github.io/percorso/','cont
       if(d.cerca){ setTimeout(function(){ var c=document.getElementById('cCerca'); if(c){ c.value=d.cerca; c.dispatchEvent(new Event('input',{bubbles:true})); c.focus(); } },250); }
       return;
     }
-    var a=document.querySelector('#menuNext .mn-v[data-pag="'+String(d.pag).replace(/"/g,'')+'"]'); if(a) a.click();
+    var a=document.querySelector('#menuNext .mn-v[data-pag="'+String(d.pag).replace(/"/g,'')+'"]');
+    if(a&&window.__parApri){ window.__apriPar=window.__parApri(String(d.pag),'&client_id='+encodeURIComponent(d.client_id||'')+'&practice_id='+encodeURIComponent(d.practice_id||'')); }
+    if(a) a.click();
   });
 })();
 </script>
@@ -5670,7 +5680,7 @@ window.PAGINE_NUOVE={'dashboard':'https://nextsrl-sim.github.io/percorso/','cont
   var f=document.getElementById('ifPortale');if(f&&VIETATE_AG.indexOf(f.getAttribute('data-p'))>=0){var d=nav.querySelector('.mn-v[data-pag="dashboard"]');if(d)d.click();}
   try{if(VIETATE_AG.indexOf(localStorage.getItem('mn_pag'))>=0)localStorage.removeItem('mn_pag');}catch(e){}}
  function dentro(j){IO=j.utente;PASS=j.pass;CHI=j.chi;try{sessionStorage.setItem('regia_pass',PASS);sessionStorage.setItem('regia_chi',CHI);sessionStorage.setItem('portale_ruolo',IO.ruolo);sessionStorage.setItem('portale_nome',IO.nome);}catch(e){}
-  g('paPorta').hidden=true;var vp=document.getElementById('porta');if(vp)vp.classList.add('nascosto');menu();if(IO.ruolo==='agente'){menuAgente();}apri();if(IO.ruolo==='next'){document.body.classList.add('pa-next');var ma=document.getElementById('mnArea');if(ma&&!ma._apri){ma._apri=1;try{if(localStorage.getItem('mn_area')==='chiusa')document.body.classList.add('mn-area-chiusa');}catch(x){}ma.addEventListener('click',function(){var c=!document.body.classList.contains('mn-area-chiusa');document.body.classList.toggle('mn-area-chiusa',c);try{localStorage.setItem('mn_area',c?'chiusa':'aperta')}catch(x){}});}/* PORTALE NEXT-102: per Sante si entra nell'Area di lavoro */var aw=document.querySelector('#menuNext .mn-v[data-pag="area-lavoro"]');if(aw)aw.click();}if(IO.deve_cambiare)apriPw(true);
+  g('paPorta').hidden=true;var vp=document.getElementById('porta');if(vp)vp.classList.add('nascosto');menu();if(IO.ruolo==='agente'){menuAgente();}apri();if(IO.ruolo==='next'){document.body.classList.add('pa-next');var ma=document.getElementById('mnArea');if(ma&&!ma._apri){ma._apri=1;try{if(localStorage.getItem('mn_area')==='chiusa')document.body.classList.add('mn-area-chiusa');}catch(x){}ma.addEventListener('click',function(){var c=!document.body.classList.contains('mn-area-chiusa');document.body.classList.toggle('mn-area-chiusa',c);try{localStorage.setItem('mn_area',c?'chiusa':'aperta')}catch(x){}});}/* PORTALE NEXT-102: per Sante si entra nell'Area di lavoro */var aw=document.querySelector('#menuNext .mn-v[data-pag="area-lavoro"]');if(aw&&!window.__apriDaLink)aw.click();}if(IO.deve_cambiare)apriPw(true);
   /* la pagina del portale aperta prima dell'accesso si ricarica, cosi riceve l'accesso della persona */
   var fp=document.getElementById('ifPortale');if(fp&&fp.getAttribute('src'))fp.setAttribute('src',fp.getAttribute('src'));}
  window.__portaleIo=function(){return IO;};
